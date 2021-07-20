@@ -1,0 +1,13 @@
+MEAN SUMMER AIRTEMP 
+
+for $c in (mean_summer_airtemp) return encode($c[Lat(-44.524999999999987:-8.974999999999987), Lon(111.975:156.27500000000000886)], "png")
+
+SENTINEL 2
+
+for $c in ( Sentinel2_Bavaria_TCI_Federation_Demo_new)
+return
+    encode
+          
+           (($c[Lat(47.417959068634456672:47.52208979822839), Long(10.942293986834827:11.073272618526571948)]), "png") 
+
+ 

@@ -1,0 +1,11 @@
+for $c in ( AverageTemperature )
+ return encode( (c.Red - c.Green)/(c.Red + c.Green ) > 0.8 , "image/png")
+
+
+image>>for $c in (S2_L2A_32631_B08_10m),
+    $d in (S2_L2A_32631_B04_10m)
+
+let $cutout := [ ansi( "2017-04-03" ), E( 640000:647000 ), N( 5090220:5094220 ) ]
+return
+  encode(  (((float) $c - $d) / ((float) $c + $d) * 255) [$cutout],
+  "image/jpeg") 

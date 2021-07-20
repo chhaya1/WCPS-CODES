@@ -1,0 +1,36 @@
+image>>for $c in (mean_summer_airtemp)
+let $kernel1 := coverage kernel1
+                over     $x x (-1:1), $y y (-1:1)
+                value list < 1; 0; -1; 2; 0; -2; 1; 0; -1 >,
+    $kernel2 := coverage kernel2
+                over    $x x (-1:1), $y y (-1:1)
+                value list < 1; 2; 1; 0; 0; 0; -1; -2; -1 >
+return
+  encode(
+    sqrt(
+      pow(
+        coverage Gx
+        over $px1 Lat( imageCrsdomain( $c, Lat ) ),
+             $py1 Lon( imageCrsdomain( $c, Lon ) )
+        values
+          condense +
+          over     $kx1 x( imageCrsdomain( $kernel1, x ) ),
+                   $ky1 y( imageCrsdomain( $kernel1, y ) )
+          using    $kernel1[ x($kx1), y($ky1) ] * $c[ Lat($px1 + $kx1), Lon($py1 + $ky1) ] ,
+        2.0
+      )
+      +
+      pow(
+        coverage Gy
+        over $px2 Lat( imageCrsdomain( $c, Lat ) ),
+             $py2 Lon( imageCrsdomain( $c, Lon ) )
+        values
+          condense +
+          over     $kx2 x( imageCrsdomain($kernel2, x ) ),
+                   $ky2 y( imageCrsdomain($kernel2, y ) )
+        using    $kernel2[ x($kx2), y($ky2) ] * $c[ Lat($px2 + $kx2), Lon($py2 + $ky2) ] ,
+        2.0
+      )
+    ),
+    "image/jpeg"
+  ) image

@@ -1,0 +1,7 @@
+for $c in (AverageTemperature)
+let $den:=max($c.Red)/count($c.Red <= 255),
+ $cov := coverage histogram
+              over bucket x ( 0:255 )
+              values   (int) (add($c.Red <= bucket ) *$den)
+  return
+      encode($c.Red[ansi("2012-12-02")]> 0, "text/csv"

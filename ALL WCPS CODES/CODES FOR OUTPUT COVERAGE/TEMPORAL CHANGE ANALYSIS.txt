@@ -1,0 +1,10 @@
+image>>for $c in (S2_L2A_32631_B04_60m)
+let $subset := [ E( 660000:690000 ), N( 5090220:5115220 ) ]
+return
+  encode(
+    
+                ((float) $c[ ansi( "2017-04-03" ) ] - 
+                        $c[ ansi( "2017-04-10" ) ] 
+            
+    ) [$subset]
+   , "image/jpeg")
